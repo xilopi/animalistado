@@ -64,12 +64,6 @@
         </div>
     </header>
 
-    <!-- Estado de Conexión en Tiempo Real -->
-    <div id="connectionStatus" class="bg-emerald-600 text-white text-xs py-1 px-4 text-center font-medium shadow-inner flex justify-center items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
-        <span>Sincronización global activada con Firebase Realtime Database</span>
-    </div>
-
     <!-- Main Content -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         
@@ -131,8 +125,14 @@
 
     </main>
 
+    <!-- Estado de Conexión (Ubicado justo antes del pie de página) -->
+    <div id="connectionStatus" class="bg-emerald-600 text-white text-xs py-2 px-4 text-center font-medium shadow-inner flex justify-center items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+        <span>Sincronización global activada con Firebase Realtime Database</span>
+    </div>
+
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-12 py-6">
+    <footer class="bg-white border-t border-gray-200 py-6">
         <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
             <p><strong>Animalistado</strong> &copy; 2026 - Conectando mascotas con sus familias.</p>
         </div>
@@ -194,26 +194,20 @@
                 <!-- Ubicación y Mapa -->
                 <div class="mb-4">
                     <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Ubicación (Selecciona en el mapa) *</label>
-                    <input type="text" id="formLocation" required placeholder="Haz clic en el mapa para fijar la ubicación exactas..." readonly class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm mb-2 cursor-pointer">
+                    <input type="text" id="formLocation" required placeholder="Haz clic en el mapa para fijar la ubicación exacta..." readonly class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm mb-2 cursor-pointer">
                     <div id="formMap" class="modal-map"></div>
                     <input type="hidden" id="formLat">
                     <input type="hidden" id="formLng">
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Fecha del Suceso *</label>
-                        <input type="date" id="formDate" required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-brand-500 focus:border-brand-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Recompensa (€ opcional)</label>
-                        <input type="text" id="formReward" placeholder="Ej: 100€" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-brand-500 focus:border-brand-500">
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Fecha del Suceso *</label>
+                    <input type="date" id="formDate" required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-brand-500 focus:border-brand-500">
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Descripción detallada</label>
-                    <textarea id="formDescription" rows="3" placeholder="Información útil: collar, comportamiento, dirección hacia la que corría..." class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-brand-500 focus:border-brand-500"></textarea>
+                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Texto del anuncio</label>
+                    <textarea id="formDescription" rows="3" placeholder="Información útil: collar, comportamiento, dirección hacia la que corría, recompensa si la hay..." class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-brand-500 focus:border-brand-500"></textarea>
                 </div>
 
                 <!-- Fotografía -->
@@ -236,9 +230,9 @@
                             <input type="tel" id="formPhone" required placeholder="600000000" class="w-full border border-gray-300 rounded-lg p-2 text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">PIN de Seguridad (4-8 dígitos) *</label>
-                            <input type="password" id="formPin" required minlength="4" maxlength="8" placeholder="****" class="w-full border border-gray-300 rounded-lg p-2 text-sm">
-                            <span class="text-[10px] text-gray-500">Para borrar o marcar como reencontrado después.</span>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">PIN de Seguridad (4 dígitos) *</label>
+                            <input type="password" id="formPin" required minlength="4" maxlength="4" pattern="[0-9]{4}" placeholder="1234" class="w-full border border-gray-300 rounded-lg p-2 text-sm">
+                            <span class="text-[10px] text-red-600 font-semibold block mt-1">📌 Apúntatelo: lo necesitarás para borrar el anuncio o marcarlo como reencontrado.</span>
                         </div>
                     </div>
                 </div>
@@ -274,9 +268,8 @@
                     <p><strong class="text-gray-700">Ubicación:</strong> <span id="detailLocation"></span></p>
                     <p><strong class="text-gray-700">Fecha:</strong> <span id="detailDate"></span></p>
                     <p id="detailChipRow"><strong class="text-gray-700">Nº Microchip:</strong> <span id="detailChip"></span></p>
-                    <p id="detailRewardRow" class="text-amber-600 font-bold"><i class="fa-solid fa-award mr-1"></i>Recompensa: <span id="detailReward"></span></p>
                     <div class="pt-2 border-t mt-2">
-                        <p class="font-semibold text-gray-800">Descripción:</p>
+                        <p class="font-semibold text-gray-800">Texto del anuncio:</p>
                         <p id="detailDescription" class="text-gray-600 bg-gray-50 p-2.5 rounded-lg mt-1 text-xs leading-relaxed"></p>
                     </div>
                     <div class="pt-2">
@@ -399,6 +392,23 @@
             });
         }
 
+        // Validación de Seguridad para el PIN
+        function validatePin(pin) {
+            if (!/^\d{4}$/.test(pin)) {
+                alert("El PIN debe tener exactamente 4 números.");
+                return false;
+            }
+            
+            // Comprobar PINs prohibidos por ser demasiado obvios
+            const forbiddenPins = ["1234", "4321", "0000", "1111", "2222", "3333", "4444", "5555", "6666", "7777", "8888", "9999"];
+            if (forbiddenPins.includes(pin)) {
+                alert("Por seguridad, no puedes utilizar un PIN inseguro como '" + pin + "'. Elige 4 dígitos diferentes.");
+                return false;
+            }
+
+            return true;
+        }
+
         // Crypto SHA-256 Hash para los PINs
         async function hashPin(pin) {
             const encoder = new TextEncoder();
@@ -416,392 +426,4 @@
             const mapView = document.getElementById('mapView');
 
             if (tab === 'list') {
-                listBtn.className = 'pb-3 px-1 text-sm sm:text-base font-medium tab-active transition';
-                mapBtn.className = 'pb-3 px-1 text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 transition';
-                listView.classList.remove('hidden');
-                mapView.classList.add('hidden');
-            } else {
-                mapBtn.className = 'pb-3 px-1 text-sm sm:text-base font-medium tab-active transition';
-                listBtn.className = 'pb-3 px-1 text-sm sm:text-base font-medium text-gray-500 hover:text-gray-700 transition';
-                mapView.classList.remove('hidden');
-                listView.classList.add('hidden');
-                
-                setTimeout(() => {
-                    initFullMap();
-                }, 200);
-            }
-        }
-
-        // Renderizar Cuadrícula de Mascotas
-        function renderPetsGrid(pets) {
-            const grid = document.getElementById('petsGrid');
-            grid.innerHTML = '';
-
-            if (pets.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
-                        <i class="fa-solid fa-paw text-4xl text-gray-300 mb-3"></i>
-                        <p class="text-gray-500 font-medium">No se encontraron mascotas con estos criterios.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            pets.forEach(pet => {
-                const isPerdido = pet.type === 'perdido';
-                const isReencontrado = pet.status === 'reencontrado';
-                
-                const badgeBg = isReencontrado ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : (isPerdido ? 'bg-red-100 text-red-800 border-red-300' : 'bg-emerald-100 text-emerald-800 border-emerald-300');
-                const badgeText = isReencontrado ? '¡REENCONTRADO!' : (isPerdido ? 'PERDIDO' : 'ENCONTRADO');
-
-                const defaultImg = pet.species === 'gato' 
-                    ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80'
-                    : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80';
-
-                const cardHtml = `
-                    <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition border border-gray-100 flex flex-col cursor-pointer" onclick="openDetailModal('${pet.id}')">
-                        <div class="relative h-48 w-full bg-gray-100">
-                            <img src="${pet.photo || defaultImg}" class="w-full h-full object-cover" alt="${pet.name || pet.species}">
-                            <span class="absolute top-3 left-3 px-2.5 py-1 text-xs font-bold rounded-full border shadow-sm ${badgeBg}">
-                                ${badgeText}
-                            </span>
-                            ${pet.reward ? `<span class="absolute top-3 right-3 px-2.5 py-1 text-xs font-bold rounded-full bg-amber-500 text-white shadow-sm"><i class="fa-solid fa-award mr-1"></i>${pet.reward}</span>` : ''}
-                        </div>
-                        <div class="p-4 flex-grow flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-900 leading-snug">${pet.name ? pet.name : pet.species.toUpperCase()}</h3>
-                                <p class="text-xs text-gray-500 mb-2">${pet.breed || 'Raza no especificada'} • ${pet.color || 'Color no especificado'}</p>
-                                <p class="text-xs text-gray-600 line-clamp-2 mb-3"><i class="fa-solid fa-location-dot text-brand-600 mr-1"></i>${pet.location}</p>
-                            </div>
-                            <div class="border-t pt-3 flex justify-between items-center text-xs text-gray-500">
-                                <span><i class="fa-regular fa-calendar mr-1"></i>${pet.date}</span>
-                                <span class="text-brand-600 font-semibold hover:underline">Ver ficha <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += cardHtml;
-            });
-        }
-
-        // Aplicar Filtros
-        function applyFilters() {
-            const typeVal = document.getElementById('filterType').value;
-            const speciesVal = document.getElementById('filterSpecies').value;
-            const searchVal = document.getElementById('filterSearch').value.toLowerCase();
-
-            const filtered = petsData.filter(pet => {
-                const matchType = typeVal === 'all' || pet.type === typeVal;
-                const matchSpecies = speciesVal === 'all' || pet.species === speciesVal;
-                const matchSearch = (pet.name && pet.name.toLowerCase().includes(searchVal)) ||
-                                    (pet.location && pet.location.toLowerCase().includes(searchVal)) ||
-                                    (pet.description && pet.description.toLowerCase().includes(searchVal));
-                return matchType && matchSpecies && matchSearch;
-            });
-
-            renderPetsGrid(filtered);
-            if (fullMapInstance) {
-                renderMapMarkers(filtered);
-            }
-        }
-
-        // Mapa Principal
-        function initFullMap() {
-            if (!fullMapInstance) {
-                fullMapInstance = L.map('fullMap').setView([40.416775, -3.703790], 6); // España por defecto
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '© OpenStreetMap'
-                }).addTo(fullMapInstance);
-            }
-            renderMapMarkers(petsData);
-        }
-
-        function renderMapMarkers(pets) {
-            // Limpiar marcadores existentes
-            mapMarkers.forEach(m => fullMapInstance.removeLayer(m));
-            mapMarkers = [];
-
-            pets.forEach(pet => {
-                if (pet.lat && pet.lng) {
-                    const marker = L.marker([pet.lat, pet.lng]).addTo(fullMapInstance);
-                    marker.bindPopup(`
-                        <div style="width: 150px;">
-                            <strong>${pet.name || pet.species}</strong><br>
-                            <span style="font-size: 11px; color: #666;">${pet.location}</span><br>
-                            <button onclick="openDetailModal('${pet.id}')" style="margin-top:5px; background:#16a34a; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">Ver Mascota</button>
-                        </div>
-                    `);
-                    mapMarkers.push(marker);
-                }
-            });
-        }
-
-        // Inicializar Mapa del Formulario
-        function initFormMap() {
-            if (formMapInstance) return;
-
-            formMapInstance = L.map('formMap').setView([40.416775, -3.703790], 5);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            }).addTo(formMapInstance);
-
-            formMapInstance.on('click', function(e) {
-                const lat = e.latlng.lat;
-                const lng = e.latlng.lng;
-
-                if (formMarker) {
-                    formMarker.setLatLng(e.latlng);
-                } else {
-                    formMarker = L.marker(e.latlng).addTo(formMapInstance);
-                }
-
-                document.getElementById('formLat').value = lat;
-                document.getElementById('formLng').value = lng;
-                
-                // Reverse geocoding básico o coordenadas por defecto
-                document.getElementById('formLocation').value = `Ubicación seleccionada (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
-            });
-        }
-
-        // Guardar Imagen en Base64
-        function setupPhotoUpload() {
-            const input = document.getElementById('formPhoto');
-            input.addEventListener('change', function() {
-                const file = input.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('formPhotoBase64').value = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-
-        function initDateDefault() {
-            document.getElementById('formDate').value = new Date().toISOString().split('T')[0];
-        }
-
-        // Abrir y Cerrar Modales
-        function openFormModal() {
-            document.getElementById('formModal').classList.remove('hidden');
-            setTimeout(() => {
-                if (formMapInstance) formMapInstance.invalidateSize();
-                else initFormMap();
-            }, 300);
-        }
-
-        function closeFormModal() {
-            document.getElementById('formModal').classList.add('hidden');
-            document.getElementById('petForm').reset();
-            document.getElementById('formPhotoBase64').value = '';
-            if (formMarker) {
-                formMapInstance.removeLayer(formMarker);
-                formMarker = null;
-            }
-        }
-
-        // Envío de Formulario (Guardar en Firebase)
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-
-            const pin = document.getElementById('formPin').value;
-            const hashedPin = await hashPin(pin);
-
-            const newPet = {
-                type: document.getElementById('formType').value,
-                species: document.getElementById('formSpecies').value,
-                name: document.getElementById('formName').value,
-                breed: document.getElementById('formBreed').value,
-                color: document.getElementById('formColor').value,
-                chip: document.getElementById('formChip').value,
-                location: document.getElementById('formLocation').value,
-                lat: parseFloat(document.getElementById('formLat').value) || 40.416775,
-                lng: parseFloat(document.getElementById('formLng').value) || -3.703790,
-                date: document.getElementById('formDate').value,
-                reward: document.getElementById('formReward').value,
-                description: document.getElementById('formDescription').value,
-                photo: document.getElementById('formPhotoBase64').value,
-                contactName: document.getElementById('formContactName').value,
-                phone: document.getElementById('formPhone').value,
-                pinHash: hashedPin,
-                status: 'activo',
-                sightings: []
-            };
-
-            if (db) {
-                db.ref('pets').push(newPet, (error) => {
-                    if (error) {
-                        alert("Error al guardar en la base de datos: " + error.message);
-                    } else {
-                        closeFormModal();
-                    }
-                });
-            } else {
-                alert("Error de conexión con Firebase.");
-            }
-        }
-
-        // Modal de Detalle
-        function openDetailModal(id) {
-            activePetId = id;
-            const pet = petsData.find(p => p.id === id);
-            if (!pet) return;
-
-            const isReencontrado = pet.status === 'reencontrado';
-            const badge = document.getElementById('detailBadge');
-            
-            if (isReencontrado) {
-                badge.className = "inline-block px-2.5 py-1 text-xs font-bold rounded-full mb-1 bg-emerald-100 text-emerald-800";
-                badge.innerText = "¡REENCONTRADO!";
-            } else {
-                badge.className = pet.type === 'perdido' 
-                    ? "inline-block px-2.5 py-1 text-xs font-bold rounded-full mb-1 bg-red-100 text-red-800" 
-                    : "inline-block px-2.5 py-1 text-xs font-bold rounded-full mb-1 bg-emerald-100 text-emerald-800";
-                badge.innerText = pet.type.toUpperCase();
-            }
-
-            document.getElementById('detailTitle').innerText = pet.name || pet.species.toUpperCase();
-            document.getElementById('detailSpeciesBreed').innerText = `${pet.species} (${pet.breed || 'Sin raza'})`;
-            document.getElementById('detailColor').innerText = pet.color || 'No indicado';
-            document.getElementById('detailLocation').innerText = pet.location;
-            document.getElementById('detailDate').innerText = pet.date;
-            
-            const defaultImg = pet.species === 'gato' 
-                ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80'
-                : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80';
-            document.getElementById('detailImage').src = pet.photo || defaultImg;
-
-            if (pet.chip) {
-                document.getElementById('detailChipRow').classList.remove('hidden');
-                document.getElementById('detailChip').innerText = pet.chip;
-            } else {
-                document.getElementById('detailChipRow').classList.add('hidden');
-            }
-
-            if (pet.reward) {
-                document.getElementById('detailRewardRow').classList.remove('hidden');
-                document.getElementById('detailReward').innerText = pet.reward;
-            } else {
-                document.getElementById('detailRewardRow').classList.add('hidden');
-            }
-
-            document.getElementById('detailDescription').innerText = pet.description || 'Sin descripción adicional.';
-            document.getElementById('detailContact').innerText = `${pet.contactName} - ${pet.phone}`;
-
-            renderSightings(pet.sightings || []);
-
-            document.getElementById('detailModal').classList.remove('hidden');
-        }
-
-        function closeDetailModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-            activePetId = null;
-            document.getElementById('sightForm').classList.add('hidden');
-        }
-
-        // Gestión de Avistamientos
-        function toggleSightForm() {
-            const form = document.getElementById('sightForm');
-            form.classList.toggle('hidden');
-        }
-
-        async function handleSightSubmit(e) {
-            e.preventDefault();
-            if (!activePetId) return;
-
-            const pet = petsData.find(p => p.id === activePetId);
-            if (!pet) return;
-
-            const newSight = {
-                location: document.getElementById('sightLocation').value,
-                date: document.getElementById('sightDate').value,
-                comment: document.getElementById('sightComment').value
-            };
-
-            const currentSightings = pet.sightings || [];
-            currentSightings.push(newSight);
-
-            if (db) {
-                db.ref('pets/' + activePetId + '/sightings').set(currentSightings, (error) => {
-                    if (!error) {
-                        document.getElementById('sightForm').reset();
-                        toggleSightForm();
-                    }
-                });
-            }
-        }
-
-        function renderSightings(sightings) {
-            const list = document.getElementById('sightingsList');
-            list.innerHTML = '';
-
-            if (!sightings || sightings.length === 0) {
-                list.innerHTML = `<p class="text-xs text-gray-500 italic">No hay avistamientos reportados aún para esta mascota.</p>`;
-                return;
-            }
-
-            sightings.forEach(s => {
-                list.innerHTML += `
-                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-xs">
-                        <div class="flex justify-between items-center text-gray-500 mb-1">
-                            <span><i class="fa-solid fa-location-pin text-brand-600 mr-1"></i><strong>${s.location}</strong></span>
-                            <span>${s.date}</span>
-                        </div>
-                        <p class="text-gray-700">${s.comment}</p>
-                    </div>
-                `;
-            });
-        }
-
-        // Acciones de Gestión con Validaciones de PIN
-        async function promptStatusChange() {
-            const pet = petsData.find(p => p.id === activePetId);
-            if (!pet) return;
-
-            const pin = prompt("Introduce tu PIN de seguridad para actualizar el estado:");
-            if (!pin) return;
-
-            const hashedInput = await hashPin(pin);
-            if (hashedInput === pet.pinHash) {
-                if (db) {
-                    db.ref('pets/' + activePetId + '/status').set('reencontrado', (error) => {
-                        if (!error) {
-                            alert("¡Estado actualizado a Reencontrado!");
-                            openDetailModal(activePetId);
-                        }
-                    });
-                }
-            } else {
-                alert("PIN incorrecto. No se puede modificar el estado.");
-            }
-        }
-
-        async function promptDeletePet() {
-            const pet = petsData.find(p => p.id === activePetId);
-            if (!pet) return;
-
-            const pin = prompt("Introduce tu PIN de seguridad para borrar la publicación:");
-            if (!pin) return;
-
-            const hashedInput = await hashPin(pin);
-            if (hashedInput === pet.pinHash) {
-                if (confirm("¿Estás seguro de que deseas eliminar este anuncio?")) {
-                    if (db) {
-                        db.ref('pets/' + activePetId).remove((error) => {
-                            if (!error) {
-                                alert("Anuncio eliminado con éxito.");
-                                closeDetailModal();
-                            }
-                        });
-                    }
-                }
-            } else {
-                alert("PIN incorrecto. No tienes permiso para borrar este anuncio.");
-            }
-        }
-    </script>
-</body>
-</html>
+                listBtn.className = 'pb-3 px-1 text-
